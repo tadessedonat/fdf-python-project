@@ -1,5 +1,4 @@
 import math
-from typing import Tuple
 
 from fdf.model import MapData
 
@@ -10,7 +9,7 @@ def project_point(
     z: int,
     scale: float,
     z_scale: float
-) -> Tuple[float, float]:
+) -> tuple[float, float]:
     angle = math.radians(30)
 
     projected_x = (x - y) * math.cos(angle)
@@ -40,7 +39,7 @@ class Camera:
         x: int,
         y: int,
         z: int
-    ) -> Tuple[float, float]:
+    ) -> tuple[float, float]:
         screen_x, screen_y = project_point(
             x,
             y,

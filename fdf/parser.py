@@ -1,5 +1,4 @@
 
-from typing import List
 from fdf.model import MapData, Point
 
 
@@ -13,13 +12,13 @@ class MapFormatError(FdfError):
 
 def parse_map(text: str) -> MapData:
     lines = text.splitlines()
-    points: List[List[Point]] = []
+    points: list[list[Point]] = []
 
     for y, line in enumerate(lines, start=1):
         if not line.strip():
             continue
 
-        row: List[Point] = []
+        row: list[Point] = []
         values = line.split()
 
         for x, value in enumerate(values, start=1):
@@ -48,7 +47,7 @@ def parse_map(text: str) -> MapData:
                     )
 
                 try:
-                    color_number = int(color_text[2:], 16)
+                    color_number = int(color_text, 0)
                 except ValueError:
                     raise MapFormatError(
                         f"Invalid color at line {y}, column {x}: {color_text}"
@@ -59,7 +58,7 @@ def parse_map(text: str) -> MapData:
                         f"Color out of range at line {y}, column {x}"
                     )
 
-                color = "#{:06X}".format(color_number)
+                color = f"#{color_number:06X}"
 
             point = Point(
                 x=x - 1,

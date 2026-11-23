@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List, Optional
 
 
 @dataclass
@@ -7,11 +6,11 @@ class Point:
     x: int
     y: int
     z: int
-    color: Optional[str] = None
+    color: str | None = None
 
 
 @dataclass
 class MapData:
-    points: List[List[Point]]
+    points: list[list[Point]]
     width: int
     height: int

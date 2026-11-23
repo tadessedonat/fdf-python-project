@@ -61,9 +61,9 @@ class FdfApp:
 
     def draw_line(
         self,
-        start: tuple,
-        end: tuple,
-        color: str = None
+        start: tuple[float, float],
+        end: tuple[float, float],
+        color: str | None = None
     ) -> None:
         line_color = color if color else "#FFFFFF"
 
