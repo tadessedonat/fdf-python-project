@@ -23,25 +23,3 @@ Run the application from the project directory:
 
 ```bash
 python3.13 main.py test.fdf
-```
-
-Replace `test.fdf` with the path to another valid map file.
-
-## Project Structure
-
-```text
-fdf-python-project/
-├── fdf/
-│   ├── __init__.py
-│   ├── app.py
-│   ├── model.py
-│   ├── parser.py
-│   └── projection.py
-├── main.py
-├── test.fdf
-└── README.md
-```
-
-## Author
-
-Donat Kibret
