@@ -37,3 +37,7 @@ Replace `test.fdf` with the path to your map file.
 - **Left mouse button + drag:** Move the map.
 - **T:** Toggle between isometric view and top view.
 
+## Screenshot
+
+![FdF wireframe viewer](fdf/screenshot.png)
+
