@@ -1,3 +1,4 @@
+
 import math
 
 from fdf.model import MapData
@@ -27,12 +28,14 @@ class Camera:
         scale: float,
         z_scale: float,
         offset_x: float,
-        offset_y: float
+        offset_y: float,
+        top_view: bool = False
     ) -> None:
         self.scale = scale
         self.z_scale = z_scale
         self.offset_x = offset_x
         self.offset_y = offset_y
+        self.top_view = top_view
 
     def transform(
         self,
@@ -40,13 +43,17 @@ class Camera:
         y: int,
         z: int
     ) -> tuple[float, float]:
-        screen_x, screen_y = project_point(
-            x,
-            y,
-            z,
-            self.scale,
-            self.z_scale
-        )
+        if self.top_view:
+            screen_x = x * self.scale
+            screen_y = y * self.scale
+        else:
+            screen_x, screen_y = project_point(
+                x,
+                y,
+                z,
+                self.scale,
+                self.z_scale
+            )
 
         screen_x += self.offset_x
         screen_y += self.offset_y
@@ -58,19 +65,25 @@ class Camera:
         cls,
         map_data: MapData,
         window_width: int,
-        window_height: int
+        window_height: int,
+        top_view: bool = False
     ) -> "Camera":
         projected_points = []
 
         for row in map_data.points:
             for point in row:
-                x, y = project_point(
-                    point.x,
-                    point.y,
-                    point.z,
-                    1.0,
-                    1.0
-                )
+                if top_view:
+                    x = float(point.x)
+                    y = float(point.y)
+                else:
+                    x, y = project_point(
+                        point.x,
+                        point.y,
+                        point.z,
+                        1.0,
+                        1.0
+                    )
+
                 projected_points.append((x, y))
 
         min_x = min(point[0] for point in projected_points)
@@ -92,5 +105,6 @@ class Camera:
             scale=scale,
             z_scale=1.0,
             offset_x=offset_x,
-            offset_y=offset_y
+            offset_y=offset_y,
+            top_view=top_view
         )
