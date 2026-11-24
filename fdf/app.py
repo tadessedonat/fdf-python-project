@@ -30,9 +30,16 @@ class FdfApp:
         self.canvas.pack(fill=tk.BOTH, expand=True)
 
         self.camera = Camera.fit(map_data, width, height)
+        self.drag_start: tuple[int, int] | None = None
+
+        self.canvas.bind("<MouseWheel>", self.zoom)
+        self.canvas.bind("<ButtonPress-1>", self.start_pan)
+        self.canvas.bind("<B1-Motion>", self.pan)
+
         self.draw_map()
 
     def draw_map(self) -> None:
+        self.canvas.delete("all")
         points = self.map_data.points
 
         for y, row in enumerate(points):
@@ -73,6 +80,46 @@ class FdfApp:
             fill=line_color,
             width=2
         )
+
+    def zoom(self, event: tk.Event) -> None:
+        factor = 1.1 if event.delta > 0 else 1 / 1.1
+
+        new_scale = self.camera.scale * factor
+
+        if not 0.1 <= new_scale <= 10000:
+            return
+
+        mouse_x = event.x
+        mouse_y = event.y
+
+        self.camera.offset_x = (
+            mouse_x - (mouse_x - self.camera.offset_x) * factor
+        )
+        self.camera.offset_y = (
+            mouse_y - (mouse_y - self.camera.offset_y) * factor
+        )
+        self.camera.scale = new_scale
+
+        self.draw_map()
+
+    def start_pan(self, event: tk.Event) -> None:
+        self.drag_start = (event.x, event.y)
+
+    def pan(self, event: tk.Event) -> None:
+        if self.drag_start is None:
+            return
+
+        old_x, old_y = self.drag_start
+
+        delta_x = event.x - old_x
+        delta_y = event.y - old_y
+
+        self.camera.offset_x += delta_x
+        self.camera.offset_y += delta_y
+
+        self.drag_start = (event.x, event.y)
+
+        self.draw_map()
 
     def run(self) -> None:
         self.root.mainloop()
