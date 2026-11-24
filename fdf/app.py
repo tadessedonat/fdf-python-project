@@ -36,6 +36,11 @@ class FdfApp:
         self.canvas.bind("<ButtonPress-1>", self.start_pan)
         self.canvas.bind("<B1-Motion>", self.pan)
 
+        self.root.bind("<KeyPress-t>", self.toggle_view)
+        self.root.bind("<KeyPress-T>", self.toggle_view)
+
+        self.canvas.focus_set()
+
         self.draw_map()
 
     def draw_map(self) -> None:
@@ -118,6 +123,18 @@ class FdfApp:
         self.camera.offset_y += delta_y
 
         self.drag_start = (event.x, event.y)
+
+        self.draw_map()
+
+    def toggle_view(self, event: tk.Event) -> None:
+        new_top_view = not self.camera.top_view
+
+        self.camera = Camera.fit(
+            self.map_data,
+            self.width,
+            self.height,
+            top_view=new_top_view
+        )
 
         self.draw_map()
 
