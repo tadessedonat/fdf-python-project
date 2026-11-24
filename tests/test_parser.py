@@ -50,3 +50,19 @@ def test_inconsistent_row_width():
 def test_empty_map():
     with pytest.raises(MapFormatError):
         parse_map("")
+
+
+def test_trailing_empty_lines():
+    result = parse_map("0 1\n2 3\n\n")
+    assert result.width == 2
+    assert result.height == 2
+
+
+def test_empty_line_inside_map():
+    with pytest.raises(MapFormatError, match="Empty row at line 2"):
+        parse_map("0 1\n\n2 3")
+
+
+def test_inconsistent_row_width_reports_line():
+    with pytest.raises(MapFormatError, match="line 2"):
+        parse_map("0 1\n2")
