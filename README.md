@@ -1,3 +1,5 @@
+
+
 # FdF - Wireframe Viewer
 
 ## About
@@ -12,6 +14,8 @@ The map is read from a `.fdf` file containing height values.
 - Parses height values and optional colors.
 - Displays maps using isometric projection.
 - Draws a wireframe using connected points.
+- Supports zooming and panning.
+- Supports top view mode.
 
 ## Requirements
 
@@ -23,3 +27,13 @@ Run the application from the project directory:
 
 ```bash
 python3.13 main.py test.fdf
+```
+
+Replace `test.fdf` with the path to your map file.
+
+## Controls
+
+- **Mouse wheel:** Zoom in and out.
+- **Left mouse button + drag:** Move the map.
+- **T:** Toggle between isometric view and top view.
+
